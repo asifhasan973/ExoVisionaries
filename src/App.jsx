@@ -1,5 +1,7 @@
 import { Routes, Route } from "react-router-dom";
 import Navbar from "./components/Navbar";
+import DesktopOnlyGate from "./components/DesktopOnlyGate";
+import { useIsDesktop } from "./hooks/useIsDesktop";
 import Home from "./pages/Home";
 import AuroraForecast from "./pages/AuroraForecast";
 import Quiz from "./pages/Quiz";
@@ -16,8 +18,15 @@ import Data from "./pages/Data";
 import SpaceDefense from "./pages/SpaceDefense";
 import Games from "./pages/Games";
 import AuroraLab from "./pages/AuroraLab";
+import NotFound from "./pages/NotFound";
 
 export default function App() {
+  const isDesktop = useIsDesktop();
+
+  if (!isDesktop) {
+    return <DesktopOnlyGate />;
+  }
+
   return (
     <div className="min-h-screen flex flex-col">
       <Navbar />
@@ -39,6 +48,7 @@ export default function App() {
           <Route path="/ai-qa" element={<AIQuestionAnswer />} />
           <Route path="/data" element={<Data />} />
           <Route path="/space-defense" element={<SpaceDefense />} />
+          <Route path="*" element={<NotFound />} />
         </Routes>
       </main>
     </div>

@@ -5,7 +5,6 @@ let dustParticles = [];
 
 // Create massive angry sun dust storm
 export function createSimpleDust(origin, target, speed = 1.0) {
-    console.log('Creating MASSIVE dust storm from angry sun!');
 
     // Create a particle system with small particles around the sun
     const particleCount = 6000; // MUCH higher density for dense cloud
@@ -74,7 +73,6 @@ export function createSimpleDust(origin, target, speed = 1.0) {
     };
 
     dustParticles.push(dustData);
-    console.log('Simple dust particles created and added to scene');
     return dustData;
 }
 
@@ -118,7 +116,6 @@ export function updateDustSpeed(newSpeed) {
     for (let i = 0; i < dustParticles.length; i++) {
         dustParticles[i].speed = newSpeed;
     }
-    console.log('Dust particle speed updated to:', newSpeed, 'for', dustParticles.length, 'dust systems');
 }
 
 // Clear all dust particles
@@ -127,5 +124,4 @@ export function clearAllDust() {
         scene.remove(dustParticles[i].mesh);
     }
     dustParticles = [];
-    console.log('All dust particles cleared');
 }

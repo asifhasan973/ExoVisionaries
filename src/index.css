@@ -81,6 +81,74 @@
   animation: float 4s ease-in-out infinite;
 }
 
+/* ===== Home page animations ===== */
+@keyframes homeGradient {
+  0%, 100% {
+    filter: brightness(1);
+  }
+  50% {
+    filter: brightness(1.15);
+  }
+}
+
+.animate-home-gradient {
+  animation: homeGradient 4s ease-in-out infinite;
+}
+
+@keyframes homeFloat {
+  0%, 100% {
+    transform: translate3d(0, 0, 0);
+  }
+  50% {
+    transform: translate3d(0, -18px, 0);
+  }
+}
+
+.animate-home-float {
+  animation: homeFloat 5s ease-in-out infinite;
+  will-change: transform;
+}
+
+@keyframes homeFadeUp {
+  from {
+    opacity: 0;
+    transform: translate3d(0, 24px, 0);
+  }
+  to {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+.home-fade-up {
+  animation: homeFadeUp 0.8s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.home-fade-up-delay-1 {
+  animation-delay: 0.1s;
+}
+
+.home-fade-up-delay-2 {
+  animation-delay: 0.25s;
+}
+
+.home-fade-up-delay-3 {
+  animation-delay: 0.4s;
+}
+
+.home-btn-hover {
+  transition: transform 0.25s cubic-bezier(0.22, 1, 0.36, 1), background-color 0.2s ease;
+}
+
+.home-btn-hover:hover {
+  transform: scale(1.05);
+}
+
+.home-video-bg {
+  transform: scaleX(-1) translateZ(0);
+  will-change: auto;
+}
+
 @keyframes bounce-slow {
 
   0%,

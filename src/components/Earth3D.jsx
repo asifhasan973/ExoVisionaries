@@ -44,7 +44,6 @@ const Earth3D = () => {
                 };
 
                 img.onerror = () => {
-                    console.error(`Failed to load image: ${imageData.url}`);
                     resolve(null);
                 };
 
@@ -86,8 +85,6 @@ const Earth3D = () => {
 
             const total = reversedNorth.length + reversedSouth.length;
 
-            console.log(reversedNorth, reversedSouth);
-
             await Promise.all([
                 preloadImages(reversedNorth, 'north', total),
                 preloadImages(reversedSouth, 'south', total)
@@ -95,8 +92,8 @@ const Earth3D = () => {
 
             setLoadingProgress(100);
 
-        } catch (error) {
-            console.error('Error fetching aurora data:', error);
+        } catch {
+            // Aurora animation data unavailable
         } finally {
             setIsLoading(false);
         }

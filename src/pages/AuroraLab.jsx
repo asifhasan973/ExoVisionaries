@@ -79,23 +79,16 @@ const AuroraLab = () => {
                     });
                 };
 
-                // Load loader script first
-                console.log('Aurora Lab: Loading loader.js...');
                 await loadScript('/aurora-lab/scripts/loader.js');
 
-                // Wait a bit then load main script
-                console.log('Aurora Lab: Loading main.js...');
                 await new Promise(resolve => setTimeout(resolve, 200));
                 await loadScript('/aurora-lab/scripts/main.js', true);
-
-                console.log('Aurora Lab: All scripts loaded successfully');
 
                 // Add a small delay to ensure Three.js has time to initialize
                 setTimeout(() => {
                     setIsLoading(false);
                 }, 500);
             } catch (err) {
-                console.error('Error loading Aurora Lab resources:', err);
                 setError(err.message);
                 setIsLoading(false);
             }

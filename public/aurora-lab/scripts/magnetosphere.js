@@ -112,10 +112,6 @@ export function updateMagnetosphere(time, solarWind, rippleInfo, shockInfluence 
   const Pd = solarWind?.pd ?? current.pd;
   const Bz = solarWind?.bz ?? current.bz;
 
-  // Log when density changes significantly
-  if (Math.abs(Pd - current.pd) > 0.1) {
-    console.log('Magnetosphere density updated from', current.pd, 'to', Pd);
-  }
   const proximity = THREE.MathUtils.clamp(shockInfluence?.proximity ?? 0, 0, 1);
   const compressionGain = THREE.MathUtils.clamp(shockInfluence?.compressionBoost ?? 0, 0, 3);
 

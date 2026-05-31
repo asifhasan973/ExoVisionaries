@@ -5,7 +5,6 @@ export let dustParticles = [];
 
 // Simple test function to create basic visible particles
 export function createSimpleTestParticles(origin) {
-    console.log('Creating simple test particles at:', origin);
 
     // First create a bright red sphere at the sun position to verify positioning
     const sphereGeometry = new THREE.SphereGeometry(5, 16, 16);
@@ -13,7 +12,6 @@ export function createSimpleTestParticles(origin) {
     const testSphere = new THREE.Mesh(sphereGeometry, sphereMaterial);
     testSphere.position.copy(origin);
     scene.add(testSphere);
-    console.log('Test sphere added at sun position');
 
     // Then create particles
     const geometry = new THREE.BufferGeometry();
@@ -38,14 +36,11 @@ export function createSimpleTestParticles(origin) {
     const points = new THREE.Points(geometry, material);
     scene.add(points);
 
-    console.log('Simple test particles created and added to scene');
-    console.log('Scene children count:', scene.children.length);
     return points;
 }
 
 // Create a simple moving particle test
 export function createMovingParticleTest(origin, target) {
-    console.log('Creating moving particle test from:', origin, 'to:', target);
 
     const geometry = new THREE.BufferGeometry();
     const positions = new Float32Array(20 * 3);
@@ -71,18 +66,13 @@ export function createMovingParticleTest(origin, target) {
     const points = new THREE.Points(geometry, material);
     scene.add(points);
 
-    console.log('Moving particle test created');
     return points;
 }
 
 // Create a dust particle system
 export function createDustParticles(origin, target, dustData = {}) {
-    console.log('Creating dust particles from:', origin, 'to:', target);
-    console.log('Origin position:', origin);
-    console.log('Target position:', target);
 
     const particleCount = dustData.particleCount || 2000; // Very high density particles
-    console.log('Particle count:', particleCount);
     const particleGeometry = new THREE.BufferGeometry();
 
     // Create position, velocity, and size arrays
@@ -180,10 +170,6 @@ export function createDustParticles(origin, target, dustData = {}) {
     scene.add(particleSystem);
     dustParticles.push(dustInfo);
 
-    console.log('Dust particles created and added to scene');
-    console.log('Particle count:', particleCount);
-    console.log('Particle system position:', particleSystem.position);
-    console.log('Scene children count:', scene.children.length);
     return dustInfo;
 }
 

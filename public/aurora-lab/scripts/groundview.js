@@ -29,7 +29,6 @@ export function initGroundView() {
     const hasHighPrecision = gl.getShaderPrecisionFormat(gl.FRAGMENT_SHADER, gl.HIGH_FLOAT).precision > 0;
     const quality = hasHighPrecision ? 'high' : 'low';
 
-    console.log(`GPU supports high precision: ${hasHighPrecision}. Using '${quality}' quality aurora.`);
 
     auroraMaterial = createAuroraMaterial(quality);
 

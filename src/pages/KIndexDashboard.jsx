@@ -113,7 +113,6 @@ export default function KIndexDashboard() {
                 });
             }
         } catch (error) {
-            console.error("Error loading K-Index data:", error);
             setError(error.message);
         } finally {
             setLoading(false);

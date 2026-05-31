@@ -51,6 +51,7 @@ export default function AuroraForecast() {
     const [isPlaying, setIsPlaying] = useState(false);
     const [playbackSpeed, setPlaybackSpeed] = useState(200);
     const [videoLoading, setVideoLoading] = useState(false);
+    const [videoError, setVideoError] = useState("");
     const intervalRef = useRef(null);
 
     const canvasRef = useRef(null);
@@ -64,10 +65,15 @@ export default function AuroraForecast() {
     const fetchVideoData = async () => {
         try {
             setVideoLoading(true);
+            setVideoError("");
             const [northResponse, southResponse] = await Promise.all([
                 fetch('https://services.swpc.noaa.gov/products/animations/ovation_north_24h.json'),
                 fetch('https://services.swpc.noaa.gov/products/animations/ovation_south_24h.json')
             ]);
+
+            if (!northResponse.ok || !southResponse.ok) {
+                throw new Error("Could not load aurora animation data from NOAA");
+            }
 
             const northData = await northResponse.json();
             const southData = await southResponse.json();
@@ -75,7 +81,7 @@ export default function AuroraForecast() {
             setNorthImages(northData.reverse());
             setSouthImages(southData.reverse());
         } catch (error) {
-            console.error('Error fetching video data:', error);
+            setVideoError(error?.message || "Failed to load aurora animations");
         } finally {
             setVideoLoading(false);
         }
@@ -238,7 +244,7 @@ export default function AuroraForecast() {
     useEffect(() => {
         const img = new Image();
         img.onload = () => setBackgroundImage(img);
-        img.onerror = () => console.warn("Failed to load background image");
+        img.onerror = () => {};
         img.src = "https://img.freepik.com/free-vector/top-view-world-map-background_1308-68322.jpg?semt=ais_hybrid&w=740&q=80";
     }, []);
 
@@ -492,6 +498,18 @@ export default function AuroraForecast() {
                                 <h3 className="text-xl font-semibold text-white mb-4 text-center">
                                     Aurora Animation Player - Last 24 Hours
                                 </h3>
+
+                                {videoError && (
+                                    <div className="mb-4 text-center py-4 px-4 rounded-lg bg-red-900/40 border border-red-500/30">
+                                        <p className="text-red-300 font-medium mb-3">{videoError}</p>
+                                        <button
+                                            onClick={fetchVideoData}
+                                            className="px-4 py-2 bg-red-500 hover:bg-red-600 text-white rounded-lg transition-colors"
+                                        >
+                                            Try Again
+                                        </button>
+                                    </div>
+                                )}
 
                                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
                                     {/* Northern Hemisphere Video */}

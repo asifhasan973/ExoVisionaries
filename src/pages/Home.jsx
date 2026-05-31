@@ -15,171 +15,101 @@ export default function Home() {
   ]);
 
   useEffect(() => {
-    const v = videoRef.current;
-    if (!v) return;
+    const video = videoRef.current;
+    if (!video) return;
 
-    let playAttempts = 0;
-    const maxAttempts = 5;
+    let cancelled = false;
 
-    const markReady = () => setVideoReady(true);
+    const markReady = () => {
+      if (!cancelled) setVideoReady(true);
+    };
 
     const tryPlay = async () => {
-      if (!v || playAttempts >= maxAttempts) return;
-
-      playAttempts++;
+      if (cancelled || !video) return;
 
       try {
-        v.currentTime = 0;
-        v.muted = true;
-
-        await v.play();
-        setVideoReady(true);
-        console.log('Video playing successfully');
-      } catch (error) {
-        console.log(`Play attempt ${playAttempts} failed:`, error);
-
-        if (playAttempts < maxAttempts) {
-          setTimeout(tryPlay, 500);
-        } else {
-          const onFirstInteraction = () => {
-            v.play().finally(() => {
-              setVideoReady(true);
-              document.removeEventListener("click", onFirstInteraction);
-              document.removeEventListener("touchstart", onFirstInteraction);
-            });
-          };
-          document.addEventListener("click", onFirstInteraction, { once: true });
-          document.addEventListener("touchstart", onFirstInteraction, { once: true });
-        }
+        video.muted = true;
+        await video.play();
+        markReady();
+      } catch {
+        const onInteraction = () => {
+          video.play().finally(markReady);
+          document.removeEventListener("click", onInteraction);
+        };
+        document.addEventListener("click", onInteraction, { once: true });
+        markReady();
       }
     };
 
-    // Try to play when video is ready
-    const handleCanPlay = () => {
+    video.addEventListener("canplay", tryPlay);
+    video.addEventListener("playing", markReady);
+
+    if (video.readyState >= 3) {
       tryPlay();
-    };
+    }
 
-    // Try to play when page becomes visible
-    const handleVisibilityChange = () => {
-      if (document.visibilityState === 'visible' && v.paused) {
-        tryPlay();
+    const handleVisibility = () => {
+      if (document.visibilityState === "visible" && video.paused) {
+        video.play().catch(() => {});
       }
     };
 
-    // Try to play when window gets focus
-    const handleFocus = () => {
-      if (v.paused) {
-        tryPlay();
-      }
-    };
+    document.addEventListener("visibilitychange", handleVisibility);
 
-    // Add event listeners
-    v.addEventListener("canplay", handleCanPlay);
-    v.addEventListener("loadedmetadata", handleCanPlay);
-    v.addEventListener("playing", markReady);
-    document.addEventListener("visibilitychange", handleVisibilityChange);
-    window.addEventListener("focus", handleFocus);
-
-    // Initial play attempt with small delay to ensure DOM is ready
-    setTimeout(() => {
-      tryPlay();
-    }, 100);
-
-    // If coming from login (you can check location.state if you're passing it from login)
     if (location.state?.fromLogin) {
-      // Force play attempt after login
-      setTimeout(() => {
-        tryPlay();
-      }, 300);
+      setTimeout(tryPlay, 300);
     }
 
     return () => {
-      v.removeEventListener("canplay", handleCanPlay);
-      v.removeEventListener("loadedmetadata", handleCanPlay);
-      v.removeEventListener("playing", markReady);
-      document.removeEventListener("visibilitychange", handleVisibilityChange);
-      window.removeEventListener("focus", handleFocus);
+      cancelled = true;
+      video.removeEventListener("canplay", tryPlay);
+      video.removeEventListener("playing", markReady);
+      document.removeEventListener("visibilitychange", handleVisibility);
     };
   }, [location]);
 
-  // Additional effect to handle play/pause based on page visibility
   useEffect(() => {
-    const v = videoRef.current;
-    if (!v) return;
-
-    const handlePageHide = () => {
-      if (!v.paused) {
-        v.pause();
-      }
-    };
-
-    const handlePageShow = () => {
-      if (v.paused && videoReady) {
-        v.play().catch(() => {
-          // Silently fail if autoplay is blocked
-        });
-      }
-    };
-
-    window.addEventListener("pagehide", handlePageHide);
-    window.addEventListener("pageshow", handlePageShow);
-
-    return () => {
-      window.removeEventListener("pagehide", handlePageHide);
-      window.removeEventListener("pageshow", handlePageShow);
-    };
-  }, [videoReady]);
-
-  // Show toast notification when page loads
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setShowToast(true);
-    }, 2000); // Show toast after 2 seconds
-
+    const timer = setTimeout(() => setShowToast(true), 2000);
     return () => clearTimeout(timer);
   }, []);
 
   return (
     <div className="relative min-h-screen overflow-hidden text-white">
       <LoadingOverlay show={!(videoReady && imgsReady)} label={`Loading… ${progress ?? 0}%`} />
-      {/* Background video */}
+
       <video
         ref={videoRef}
-        className="pointer-events-none absolute inset-0 -z-30 h-full w-full object-cover scale-x-[-1]"
+        className="pointer-events-none absolute inset-0 -z-30 h-full w-full object-cover scale-x-[-1] home-video-bg"
         autoPlay
         loop
         muted
         playsInline
         preload="auto"
         controls={false}
-        poster=""
       >
         <source src="/videos/1851190-uhd_3840_2160_25fps.mp4" type="video/mp4" />
       </video>
 
-      {/* Gradient overlay */}
       <div className="absolute inset-0 -z-20 bg-gradient-to-b from-purple-900/60 via-indigo-900/60 to-black/80" />
 
-      {/* Split layout */}
       <div className="relative z-10 grid grid-cols-1 lg:grid-cols-2 min-h-screen">
-        {/* LEFT SIDE: Text + Buttons */}
         <div className="flex flex-col items-center lg:items-start justify-center px-4 sm:px-6 md:px-8 lg:px-16 text-center lg:text-left xl:ps-32 pt-20 lg:pt-0">
-          <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-8xl font-extrabold tracking-wide drop-shadow-lg leading-tight">
-            <span className="bg-gradient-to-r from-pink-400 via-fuchsia-400 to-indigo-400 bg-clip-text text-transparent animate-pulse moo-lah-lah-regular">
+          <h1 className="home-fade-up home-fade-up-delay-1 text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-8xl font-extrabold tracking-wide drop-shadow-lg leading-tight">
+            <span className="animate-home-gradient bg-gradient-to-r from-pink-400 via-fuchsia-400 to-indigo-400 bg-clip-text text-transparent moo-lah-lah-regular">
               Solar <br /> Storms
               to
               <br /> Auroras
             </span>
           </h1>
-          <p className="mt-4 text-lg sm:text-xl md:text-2xl text-white/80 font-bold max-w-2xl">
+          <p className="home-fade-up home-fade-up-delay-2 mt-4 text-lg sm:text-xl md:text-2xl text-white/80 font-bold max-w-2xl">
             Every Flare Tells a Story Worth Exploring.
           </p>
 
-          <div className="mt-6 sm:mt-8 flex flex-col sm:flex-row gap-3 sm:gap-4 w-full sm:w-auto">
+          <div className="home-fade-up home-fade-up-delay-3 mt-6 sm:mt-8 flex flex-col sm:flex-row gap-3 sm:gap-4 w-full sm:w-auto">
             <Link to="/start" className="w-full sm:w-auto">
               <Button
                 size="lg"
-                className="w-full sm:w-auto bg-fuchsia-500 hover:bg-fuchsia-400 text-white shadow-lg transform hover:scale-110 transition duration-300"
+                className="home-btn-hover w-full sm:w-auto bg-fuchsia-500 hover:bg-fuchsia-400 text-white shadow-lg"
               >
                 <span className="font-bold text-base sm:text-lg">Start Journey</span>
               </Button>
@@ -188,7 +118,7 @@ export default function Home() {
               <Button
                 size="lg"
                 variant="secondary"
-                className="w-full sm:w-auto bg-white/20 text-white hover:bg-white/30 shadow-lg transform hover:scale-110 transition duration-300"
+                className="home-btn-hover w-full sm:w-auto bg-white/20 text-white hover:bg-white/30 shadow-lg"
               >
                 <span className="font-bold text-base sm:text-lg">Aurora Lab</span>
               </Button>
@@ -196,19 +126,16 @@ export default function Home() {
           </div>
         </div>
 
-        {/* RIGHT SIDE: Characters */}
         <div className="relative flex items-center justify-center order-first lg:order-last">
-          {/* Astronaut floating from top */}
           <img
             src="/images/astranaut2.png"
             alt="Astronaut Stelly"
-            className="absolute top-10 sm:top-20 lg:top-40 right-4 sm:right-8 lg:right-40 h-[25vh] sm:h-[35vh] lg:h-[90vh] w-auto animate-float drop-shadow-[0_10px_30px_rgba(59,130,246,.6)]"
+            className="home-fade-up home-fade-up-delay-2 absolute top-10 sm:top-20 lg:top-40 right-4 sm:right-8 lg:right-40 h-[25vh] sm:h-[35vh] lg:h-[90vh] w-auto animate-home-float drop-shadow-[0_10px_30px_rgba(59,130,246,.6)]"
             draggable={false}
           />
         </div>
       </div>
 
-      {/* Toast Notification */}
       {showToast && (
         <Toast
           message="💻 Use Laptop and Ctrl - or Ctrl + for better experience and adjustment"

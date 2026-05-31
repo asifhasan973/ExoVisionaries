@@ -92,19 +92,10 @@ const _tryApiCall = async (apiKey, messages, modelIndex = 0) => {
         }
     } catch (error) {
         const errorMessage = error.response?.data?.error?.message || error.message;
-        console.warn(`❌ Model ${model} failed:`, errorMessage);
-        console.warn('Full error details:', {
-            status: error.response?.status,
-            statusText: error.response?.statusText,
-            data: error.response?.data,
-            message: error.message
-        });
 
-        // If this model failed due to decommissioning, try the next one
         if (errorMessage?.includes('decommissioned') ||
             errorMessage?.includes('not found') ||
             errorMessage?.includes('does not exist')) {
-            console.log(`🔄 Trying next model (${modelIndex + 1}/${AVAILABLE_MODELS.length})...`);
             return await _tryApiCall(apiKey, messages, modelIndex + 1);
         }
 
@@ -216,6 +207,19 @@ export const isApiConfigured = () => {
     const apiKey = getApiKey();
     return apiKey !== null;
 };
+
+export const isAiServiceAvailable = () => {
+    if (import.meta.env.VITE_AI_ENABLED === 'true' && isApiConfigured()) {
+        return true;
+    }
+    return false;
+};
+
+export const getAiUnavailableReason = () => ({
+    title: 'AI Assistant Temporarily Unavailable',
+    message:
+        'The AI assistant is currently offline because the API quota has expired. All other features — Aurora Lab, live forecasts, games, and story modules — work normally.',
+});
 
 // Function to test API connection
 export const testApiConnection = async () => {

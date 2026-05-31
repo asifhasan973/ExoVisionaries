@@ -22,16 +22,12 @@ const earth = createEarth();
 
 // Create MASSIVE angry sun dust storm
 setTimeout(() => {
-  console.log('Creating MASSIVE dust storm from angry sun!');
-  console.log('Sun position:', sun ? sun.position : 'Sun not found');
-  console.log('Earth position:', earth ? earth.position : 'Earth not found');
 
   if (sun && sun.position && earth && earth.position) {
     // Create dense dust clouds around the sun
     for (let i = 0; i < 4; i++) {
       createSimpleDust(sun.position, earth.position, simulationParams.windSpeed / 800);
     }
-    console.log('Dense dust clouds created - 4 clouds of 6000 particles each!');
   } else {
     console.error('Sun or Earth not found!');
   }
@@ -49,13 +45,11 @@ const auroraMaterial = createAuroraMaterial();
 controlPanel.onParamChange((params) => {
   // Update dust particle speed when windSpeed changes
   if (params.windSpeed !== undefined) {
-    console.log('Wind speed changed to:', params.windSpeed, 'km/s, updating dust speed to:', params.windSpeed / 800);
     updateDustSpeed(params.windSpeed / 800);
   }
 
   // Update magnetosphere when density or bz changes
   if (params.density !== undefined || params.bz !== undefined) {
-    console.log('Magnetosphere parameters changed - Density:', params.density, 'Bz:', params.bz);
     // The magnetosphere will be updated in the next animation frame
   }
 
@@ -103,7 +97,6 @@ function maybeAuto() {
   if (simulationParams.emissionInterval <= 0) return;
   if (nextAuto === null) nextAuto = time + simulationParams.emissionInterval;
   if (time >= nextAuto) {
-    console.log('Auto MASSIVE dust storm triggered');
 
     // Create dense dust clouds
     if (sun && sun.position && earth && earth.position) {
@@ -118,7 +111,6 @@ function maybeAuto() {
 function spawnTap() {
   if (time - lastTap < 0.15) return;
 
-  console.log('Manual MASSIVE dust storm triggered');
 
   // Create dense dust clouds
   if (sun && sun.position && earth && earth.position) {
@@ -139,7 +131,6 @@ window.createDustStorm = () => {
     for (let i = 0; i < 5; i++) {
       createSimpleDust(sun.position, earth.position, simulationParams.windSpeed / 800);
     }
-    console.log('Dense dust clouds created - 5 clouds of 6000 particles each!');
   }
 };
 
@@ -147,7 +138,6 @@ window.createDustStorm = () => {
 window.createTestParticles = () => {
   if (sun && sun.position) {
     createSimpleTestParticles(sun.position);
-    console.log('Simple test particles created!');
   }
 };
 
@@ -155,13 +145,11 @@ window.createTestParticles = () => {
 window.createMovingTest = () => {
   if (sun && sun.position && earth && earth.position) {
     createMovingParticleTest(sun.position, earth.position);
-    console.log('Moving particle test created!');
   }
 };
 
 // Make basic shapes test available globally
 window.createBasicShapes = () => {
-  console.log('Creating basic shapes test...');
 
   // Create a simple red cube
   const cubeGeometry = new THREE.BoxGeometry(10, 10, 10);
@@ -169,7 +157,6 @@ window.createBasicShapes = () => {
   const testCube = new THREE.Mesh(cubeGeometry, cubeMaterial);
   testCube.position.set(0, 0, 0);
   scene.add(testCube);
-  console.log('Red cube created at center');
 
   // Create a simple green sphere
   const sphereGeometry = new THREE.SphereGeometry(5, 16, 16);
@@ -177,29 +164,16 @@ window.createBasicShapes = () => {
   const testSphere = new THREE.Mesh(sphereGeometry, sphereMaterial);
   testSphere.position.set(20, 0, 0);
   scene.add(testSphere);
-  console.log('Green sphere created');
 
-  console.log('Scene children count:', scene.children.length);
 };
 
 // Debug function to check Three.js setup
 window.debugThreeJS = () => {
-  console.log('=== Three.js Debug Info ===');
-  console.log('Scene:', scene);
-  console.log('Camera:', camera);
-  console.log('Renderer:', renderer);
-  console.log('Scene children count:', scene.children.length);
-  console.log('Camera position:', camera.position);
-  console.log('Camera target:', camera.target);
-  console.log('Renderer size:', renderer.getSize(new THREE.Vector2()));
-  console.log('Renderer canvas:', renderer.domElement);
-  console.log('========================');
 };
 
 // Clear all dust particles
 window.clearDust = () => {
   clearAllDust();
-  console.log('All dust particles cleared');
 };
 
 // Create a very obvious test particle cloud
@@ -227,7 +201,6 @@ window.createTestCloud = () => {
 
     const cloud = new THREE.Points(geometry, material);
     scene.add(cloud);
-    console.log('Test cloud created at sun position');
   }
 };
 renderer.domElement.addEventListener('pointerdown', evt => {
@@ -344,17 +317,14 @@ function animate() {
   renderGroundView();
 }
 // Start animation immediately and hide loader when ready
-console.log('Aurora Lab: Starting animation...');
 
 try {
   // Start the animation loop
   animate();
-  console.log('Aurora Lab: Animation started successfully');
 
   // Hide the loader after a short delay to ensure everything is loaded
   setTimeout(() => {
     if (window.hideAuroraLoader) {
-      console.log('Aurora Lab: Hiding loader...');
       window.hideAuroraLoader();
     }
   }, 1000);

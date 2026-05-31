@@ -132,7 +132,6 @@ export default function ElectronFluenceForecast() {
                 });
             }
         } catch (error) {
-            console.error("Error loading electron fluence data:", error);
             setError(error.message);
         } finally {
             setLoading(false);
