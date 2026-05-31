@@ -118,13 +118,13 @@ flowchart TB
 **Institution:** Chittagong University of Engineering and Technology (CUET)  
 **Organization:** Andromeda Space and Robotics Research Organisation (ASRRO)
 
-| Member | Role |
-|--------|------|
-| **Jannatul Naeem Esmi** | Team Leader — Petroleum and Mining Engineering |
-| **Shaoli Bose** | Team Member |
-| **Priya Dev** | Team Member |
-| **Md Habibullah Galib** | Team Member |
-| **Asif Hasan** | Team Member — Computer Science and Engineering |
+| Member | Department | Contribution |
+|--------|------------|--------------|
+| **Jannatul Naeem Esmi** | Petroleum and Mining Engineering | Team Leader · Video Editor |
+| **Asif Hasan** | Computer Science and Engineering | Web Developer · AI Integration |
+| **Md Habibullah Galib** | Computer Science and Engineering | UI/UX Design |
+| **Shaoli Bose** | Petroleum and Mining Engineering | Narrator (Video) |
+| **Priya Dev** | Electronic and Telecommunication Engineering | Script Writer |
 
 ### Recognition and Press
 
