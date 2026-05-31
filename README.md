@@ -4,6 +4,28 @@
 [![NASA Space Apps 2025](https://img.shields.io/badge/NASA%20Space%20Apps-2025%20Global%20Finalist-blue)](https://www.spaceappschallenge.org/2025/find-a-team/exovisionaries/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 
+### Tech Tags
+
+![React](https://img.shields.io/badge/React-19-61DAFB?logo=react&logoColor=black)
+![Vite](https://img.shields.io/badge/Vite-7-646CFF?logo=vite&logoColor=white)
+![JavaScript](https://img.shields.io/badge/JavaScript-ES6+-F7DF1E?logo=javascript&logoColor=black)
+![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-4-06B6D4?logo=tailwindcss&logoColor=white)
+![Three.js](https://img.shields.io/badge/Three.js-0.180-black?logo=threedotjs&logoColor=white)
+![React Three Fiber](https://img.shields.io/badge/React_Three_Fiber-9-black?logo=react&logoColor=white)
+![React Router](https://img.shields.io/badge/React_Router-7-CA4245?logo=reactrouter&logoColor=white)
+![Zustand](https://img.shields.io/badge/Zustand-5-443B2E?logo=react&logoColor=white)
+![Radix UI](https://img.shields.io/badge/Radix_UI-Slider-161618?logo=radixui&logoColor=white)
+![Axios](https://img.shields.io/badge/Axios-HTTP-5A29E4?logo=axios&logoColor=white)
+![Lottie](https://img.shields.io/badge/Lottie-React-00DDB3?logo=lottiefiles&logoColor=white)
+![Lucide](https://img.shields.io/badge/Lucide-Icons-F56565)
+![Groq](https://img.shields.io/badge/Groq-AI_API-F55036)
+![NASA](https://img.shields.io/badge/NASA-DONKI_API-E03C31?logo=nasa&logoColor=white)
+![NOAA](https://img.shields.io/badge/NOAA-SWPC_API-003087)
+![Vercel](https://img.shields.io/badge/Vercel-Deploy-black?logo=vercel&logoColor=white)
+![ESLint](https://img.shields.io/badge/ESLint-9-4B32C3?logo=eslint&logoColor=white)
+
+`react` · `vite` · `javascript` · `tailwindcss` · `threejs` · `react-three-fiber` · `react-router` · `zustand` · `radix-ui` · `axios` · `lottie` · `groq-api` · `nasa-api` · `noaa-api` · `vercel` · `space-weather` · `aurora` · `education` · `nasa-space-apps-challenge`
+
 > **NASA Space Apps Challenge 2025 — Global Finalist (Top 45 Worldwide)**
 
 An interactive space weather education platform that teaches children about solar storms, auroras, and heliophysics through storytelling, real-time NASA/NOAA data, 3D simulations, and gamified learning.
